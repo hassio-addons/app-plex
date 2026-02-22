@@ -5,19 +5,25 @@ FROM ${BUILD_FROM}
 # Set shell to bash with strict error handling
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+ARG BUILD_ARCH
+
 # Build arguments for version control and metadata
 # hadolint ignore=DL3008
 RUN \
-    read BUILD_ARCH <<< "$(uname -m)" && \
     case "$BUILD_ARCH" in \
       x86_64)  ARCH=amd64 ;; \
       aarch64) ARCH=arm64 ;; \
       armv7l)  ARCH=armhf ;; \
       *) echo "Unsupported architecture: $BUILD_ARCH" >&2; exit 1 ;; \
     esac && \
-    read PLEX_VERSION PLEX_HASH <<< "$(curl -s https://plex.tv/pms/downloads/5.json | jq -r '[.. | .version? // empty | select(type=="string")][0]' | tr '-' ' ')"  \
-    # CHECK: Verify that the version and hash were extracted correctly
-    && echo "Plex Media Server version: ${PLEX_VERSION} (${PLEX_HASH}) ARCH: ${ARCH} BUILDARCH: ${BUILD_ARCH}" \
+    PLEX_FULL="$(curl -s https://plex.tv/pms/downloads/5.json | jq -r '[.. | .version? // empty | select(type=="string")][0]')" && \
+    PLEX_VERSION="${PLEX_FULL%-*}" && \
+    PLEX_HASH="${PLEX_FULL##*-}" && \
+    if [ -z "$PLEX_VERSION" ] || [ "$PLEX_VERSION" = "null" ] || [ -z "$PLEX_HASH" ]; then \
+        echo "Could not determine Plex version/hash from API" >&2; \
+        exit 1; \
+    fi && \
+    echo "Plex Media Server version: ${PLEX_VERSION} (${PLEX_HASH}) ARCH: ${ARCH} BUILDARCH: ${BUILD_ARCH}" \
     && echo "deb http://deb.debian.org/debian trixie contrib non-free" \
         >> /etc/apt/sources.list && \
     apt-get update && apt-get install -y --no-install-recommends \
@@ -28,14 +34,14 @@ RUN \
    && curl -J -L -o /tmp/plexmediaserver.deb \
   "https://downloads.plex.tv/plex-media-server-new/${PLEX_VERSION}-${PLEX_HASH}/debian/plexmediaserver_${PLEX_VERSION}-${PLEX_HASH}_${ARCH}.deb" \ 
   && dpkg --install /tmp/plexmediaserver.deb \
-    \
+  \
     && apt-get -y clean \
     && rm -fr \
         /tmp/* \
         /var/{cache,log}/* \
         /var/lib/apt/lists/*
 
-        # Copy root filesystem
+# Copy root filesystem
 COPY rootfs /
 
 # Build arguments
