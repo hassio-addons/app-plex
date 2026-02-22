@@ -5,32 +5,23 @@ FROM ${BUILD_FROM}
 # Set shell to bash with strict error handling
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-ARG BUILD_ARCH
+ARG BUILD_ARCH=amd64
+
 
 # Build arguments for version control and metadata
 # hadolint ignore=DL3008
 RUN \
-    case "$BUILD_ARCH" in \
-      x86_64)  ARCH=amd64 ;; \
-      aarch64) ARCH=arm64 ;; \
-      armv7l)  ARCH=armhf ;; \
-      *) echo "Unsupported architecture: $BUILD_ARCH" >&2; exit 1 ;; \
-    esac && \
-    PLEX_FULL="$(curl -s https://plex.tv/pms/downloads/5.json | jq -r '[.. | .version? // empty | select(type=="string")][0]')" && \
-    PLEX_VERSION="${PLEX_FULL%-*}" && \
-    PLEX_HASH="${PLEX_FULL##*-}" && \
-    if [ -z "$PLEX_VERSION" ] || [ "$PLEX_VERSION" = "null" ] || [ -z "$PLEX_HASH" ]; then \
-        echo "Could not determine Plex version/hash from API" >&2; \
-        exit 1; \
-    fi && \
-    echo "Plex Media Server version: ${PLEX_VERSION} (${PLEX_HASH}) ARCH: ${ARCH} BUILDARCH: ${BUILD_ARCH}" \
-    && echo "deb http://deb.debian.org/debian trixie contrib non-free" \
-        >> /etc/apt/sources.list && \
+    echo "deb http://deb.debian.org/debian trixie contrib non-free" >> /etc/apt/sources.list && \
     apt-get update && apt-get install -y --no-install-recommends \
         xmlstarlet>="1.6.1-4" \
         uuid-runtime=2.41-5 \
         unrar=1:7.1.8-1 \
     \
+    && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
+    && if [ "${BUILD_ARCH}" = "amd64" ]; then ARCH="amd64"; fi \
+    \
+    && read -r PLEX_VERSION PLEX_HASH <<< "$(curl -s https://plex.tv/pms/downloads/5.json | jq -r '[.. | .version? // empty | select(type=="string")][0]' | tr '-' ' ')"  \
+    && echo "Plex Media Server version: ${PLEX_VERSION} (${PLEX_HASH}) ARCH: ${ARCH} BUILDARCH: ${BUILD_ARCH}" \
    && curl -J -L -o /tmp/plexmediaserver.deb \
   "https://downloads.plex.tv/plex-media-server-new/${PLEX_VERSION}-${PLEX_HASH}/debian/plexmediaserver_${PLEX_VERSION}-${PLEX_HASH}_${ARCH}.deb" \ 
   && dpkg --install /tmp/plexmediaserver.deb \
