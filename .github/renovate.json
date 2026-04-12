@@ -32,9 +32,24 @@
       "depNameTemplate": "plexmediaserver",
       "datasourceTemplate": "custom.plex",
       "versioningTemplate": "loose"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["//Dockerfile$/"],
+      "matchStringsStrategy": "any",
+      "matchStrings": [
+        "\\s\\s(?<depName>[a-z0-9][a-z0-9-]+)=(?<currentValue>[a-z0-9-:_+~.]+)\\s+"
+      ],
+      "versioningTemplate": "deb",
+      "datasourceTemplate": "repology",
+      "depNameTemplate": "debian_13/{{depName}}"
     }
   ],
   "packageRules": [
+    {
+      "matchDatasources": ["repology"],
+      "automerge": true
+    },
     {
       "groupName": "App base image",
       "matchDatasources": ["docker"]
