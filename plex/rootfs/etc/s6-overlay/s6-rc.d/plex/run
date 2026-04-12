@@ -1,7 +1,7 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 # ==============================================================================
-# Home Assistant Community Add-on: Plex Media Server
+# Home Assistant Community App: Plex Media Server
 # Runs the Plex Media Server
 # ==============================================================================
 bashio::log.info 'Starting the Plex Media Server...'
