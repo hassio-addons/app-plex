@@ -93,7 +93,7 @@ to Plex. You can list multiple if you'd like, separated by a comma.
 Example:
 
 ```txt
-http://hassio.local:32400,http://192.168.1.88:32400,http://mydomain.duckdns.org:32400
+http://homeassistant.local:32400,http://192.168.1.88:32400,http://mydomain.duckdns.org:32400
 ```
 
 ## Known issues and limitations
