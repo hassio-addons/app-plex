@@ -1,7 +1,7 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 # ==============================================================================
-# Home Assistant Community Add-on: Plex Media Server
+# Home Assistant Community App: Plex Media Server
 # Initializes all kinds of stuff on the first run of the Plex Media Server
 # ==============================================================================
 readonly prefs="/data/Plex Media Server/Preferences.xml"
@@ -35,11 +35,11 @@ fi
 if ! bashio::fs.file_exists "${prefs}"; then
     if ! bashio::config.has_value "claim_code"; then
         bashio::log.fatal
-        bashio::log.fatal "Add-on configuration is incomplete!"
+        bashio::log.fatal "App configuration is incomplete!"
         bashio::log.fatal
         bashio::log.fatal "Plex requires a claim code on the first run!"
         bashio::log.fatal
-        bashio::log.fatal "Please check the installation manual of the add-on."
+        bashio::log.fatal "Please check the installation manual of the app."
         bashio::log.fatal
         bashio::exit.nok
     fi
@@ -53,7 +53,7 @@ if ! bashio::fs.file_exists "${prefs}"; then
 EOF
 
     serial=$(uuidgen)
-    clientId=$(sha1sum <<< "${serial} - Home Assistant Plex add-on" | cut -b 1-40)
+    clientId=$(sha1sum <<< "${serial} - Home Assistant Plex app" | cut -b 1-40)
 
     setPref "MachineIdentifier" "${serial}"
     setPref "ProcessedMachineIdentifier" "${clientId}"

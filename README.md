@@ -1,4 +1,4 @@
-# Home Assistant Community Add-on: Plex Media Server
+# Home Assistant Community App: Plex Media Server
 
 [![GitHub Release][releases-shield]][releases]
 ![Project Stage][project-stage-shield]
@@ -21,12 +21,12 @@
 Your recorded media, live TV, online news, and podcasts, beautifully organized
 and ready to stream.
 
-[:books: Read the full add-on documentation][docs]
+[:books: Read the full app documentation][docs]
 
 ## About
 
-The plex add-on brings your favorite media together in one place, making it
-beautiful and easy to enjoy. The Plex Media Server provided by this addon,
+The plex app brings your favorite media together in one place, making it
+beautiful and easy to enjoy. The Plex Media Server provided by this app,
 organizes your personal video, music, and photo collections
 and streams them to all of your devices.
 
@@ -36,7 +36,7 @@ Got questions?
 
 You have several options to get them answered:
 
-- The [Home Assistant Community Add-ons Discord chat server][discord] for add-on
+- The [Home Assistant Community Apps Discord chat server][discord] for app
   support and feature requests.
 - The [Home Assistant Discord chat server][discord-ha] for general Home
   Assistant discussions and questions.
@@ -62,18 +62,18 @@ The original setup of this repository is by [Franck Nijhof][frenck].
 For a full list of all authors and contributors,
 check [the contributor's page][contributors].
 
-## We have got some Home Assistant add-ons for you
+## We have got some Home Assistant apps for you
 
 Want some more functionality to your Home Assistant instance?
 
-We have created multiple add-ons for Home Assistant. For a full list, check out
+We have created multiple apps for Home Assistant. For a full list, check out
 our [GitHub Repository][repository].
 
 ## License
 
 MIT License
 
-Copyright (c) 2018-2025 Franck Nijhof
+Copyright (c) 2018-2026 Franck Nijhof
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -95,27 +95,27 @@ SOFTWARE.
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[commits-shield]: https://img.shields.io/github/commit-activity/y/hassio-addons/addon-plex.svg
-[commits]: https://github.com/hassio-addons/addon-plex/commits/main
-[contributors]: https://github.com/hassio-addons/addon-plex/graphs/contributors
+[commits-shield]: https://img.shields.io/github/commit-activity/y/hassio-addons/app-plex.svg
+[commits]: https://github.com/hassio-addons/app-plex/commits/main
+[contributors]: https://github.com/hassio-addons/app-plex/graphs/contributors
 [discord-ha]: https://discord.gg/c5DvZ4e
 [discord-shield]: https://img.shields.io/discord/478094546522079232.svg
 [discord]: https://discord.me/hassioaddons
-[docs]: https://github.com/hassio-addons/addon-plex/blob/main/plex/DOCS.md
+[docs]: https://github.com/hassio-addons/app-plex/blob/main/plex/DOCS.md
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg
 [forum]: https://community.home-assistant.io/t/home-assistant-community-add-on-plex-media-server/54383?u=frenck
 [frenck]: https://github.com/frenck
-[github-actions-shield]: https://github.com/hassio-addons/addon-plex/workflows/CI/badge.svg
-[github-actions]: https://github.com/hassio-addons/addon-plex/actions
+[github-actions-shield]: https://github.com/hassio-addons/app-plex/workflows/CI/badge.svg
+[github-actions]: https://github.com/hassio-addons/app-plex/actions
 [github-sponsors-shield]: https://frenck.dev/wp-content/uploads/2019/12/github_sponsor.png
 [github-sponsors]: https://github.com/sponsors/frenck
-[issue]: https://github.com/hassio-addons/addon-plex/issues
-[license-shield]: https://img.shields.io/github/license/hassio-addons/addon-plex.svg
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2025.svg
+[issue]: https://github.com/hassio-addons/app-plex/issues
+[license-shield]: https://img.shields.io/github/license/hassio-addons/app-plex.svg
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2026.svg
 [patreon-shield]: https://frenck.dev/wp-content/uploads/2019/12/patreon.png
 [patreon]: https://www.patreon.com/frenck
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-brightgreen.svg
 [reddit]: https://reddit.com/r/homeassistant
-[releases-shield]: https://img.shields.io/github/release/hassio-addons/addon-plex.svg
-[releases]: https://github.com/hassio-addons/addon-plex/releases
+[releases-shield]: https://img.shields.io/github/release/hassio-addons/app-plex.svg
+[releases]: https://github.com/hassio-addons/app-plex/releases
 [repository]: https://github.com/hassio-addons/repository

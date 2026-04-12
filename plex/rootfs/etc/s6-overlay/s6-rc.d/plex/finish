@@ -1,7 +1,7 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 # ==============================================================================
-# Home Assistant Community Add-on: Plex Media Server
+# Home Assistant Community App: Plex Media Server
 # Take down the S6 supervision tree when the Plex Media Server fails
 # ==============================================================================
 declare exit_code
