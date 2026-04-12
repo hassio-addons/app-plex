@@ -11,7 +11,9 @@ ARG PLEX_VERSION=1.43.1.10611-1e34174b1
 
 # hadolint ignore=DL3008
 RUN \
-    apt-get update \
+    echo "deb http://deb.debian.org/debian trixie contrib non-free non-free-firmware" \
+        >> /etc/apt/sources.list \
+    && apt-get update \
     \
     && apt-get install -y --no-install-recommends \
         xmlstarlet>="1.6.1-4" \
