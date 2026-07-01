@@ -57,7 +57,13 @@ def load_options():
     options["plex_url"] = str(options["plex_url"]).rstrip("/")
     options["listen_port"] = int(options["listen_port"])
     if not options.get("advertise_ip"):
-        options["advertise_ip"] = detect_lan_ip()
+        try:
+            options["advertise_ip"] = detect_lan_ip()
+        except OSError as err:
+            raise RuntimeError(
+                "Could not auto-detect dlna_proxy_advertise_ip; set it to the "
+                "Home Assistant host IP address in the add-on configuration."
+            ) from err
     return options
 
 
@@ -66,6 +72,11 @@ def detect_lan_ip():
     try:
         sock.connect(("8.8.8.8", 80))
         return sock.getsockname()[0]
+    except OSError:
+        fallback = socket.gethostbyname(socket.gethostname())
+        if fallback and not fallback.startswith("127."):
+            return fallback
+        raise
     finally:
         sock.close()
 
@@ -172,13 +183,32 @@ class ProxyHandler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         self.forward()
 
+    def do_SUBSCRIBE(self):
+        self.forward()
+
+    def do_UNSUBSCRIBE(self):
+        self.forward()
+
     def log_message(self, fmt, *args):
         log(f"[http] {self.address_string()} {fmt % args}")
+
+    def send_upstream_headers(self, headers):
+        for key, value in headers.items():
+            if key.lower() in (
+                "connection",
+                "transfer-encoding",
+                "content-length",
+                "content-encoding",
+                "server",
+            ):
+                continue
+            self.send_header(key, value)
+        self.send_header("Server", SERVER_HEADER)
 
     def forward(self, head_only=False):
         target = PLEX_URL + self.path
         body = None
-        if self.command in ("POST", "PUT", "PATCH"):
+        if self.command in ("POST", "PUT", "PATCH", "SUBSCRIBE", "UNSUBSCRIBE"):
             length = int(self.headers.get("Content-Length", "0") or "0")
             body = self.rfile.read(length) if length else b""
 
@@ -198,17 +228,7 @@ class ProxyHandler(http.server.BaseHTTPRequestHandler):
                 rewrite = is_rewriteable(content_type, self.path)
 
                 self.send_response(resp.status)
-                for key, value in resp.headers.items():
-                    if key.lower() in (
-                        "connection",
-                        "transfer-encoding",
-                        "content-length",
-                        "content-encoding",
-                        "server",
-                    ):
-                        continue
-                    self.send_header(key, value)
-                self.send_header("Server", SERVER_HEADER)
+                self.send_upstream_headers(resp.headers)
 
                 if rewrite and not head_only:
                     data = rewrite_body(resp.read())
@@ -231,6 +251,7 @@ class ProxyHandler(http.server.BaseHTTPRequestHandler):
             if is_rewriteable(err.headers.get("Content-Type", ""), self.path):
                 data = rewrite_body(data)
             self.send_response(err.code)
+            self.send_upstream_headers(err.headers)
             self.send_header("Content-Length", str(len(data)))
             self.end_headers()
             if not head_only:
