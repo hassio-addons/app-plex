@@ -35,6 +35,11 @@ Example app configuration:
 ```yaml
 log_level: info
 claim_code: claim-cAMrqFrenckFU4x445Tn
+dlna_proxy_enabled: false
+dlna_proxy_backend_url: http://127.0.0.1:32469
+dlna_proxy_advertise_ip: ""
+dlna_proxy_port: 32470
+dlna_proxy_friendly_name: Plex DLNA Proxy
 ```
 
 **Note**: _This is just an example, don't copy and paste it! Create your own!_
@@ -67,6 +72,41 @@ In order to get your code surf to <https://www.plex.tv/claim>.
 
 This code is only used once by the app. As soon as the
 server is successfully authenticated with Plex, the code may be removed.
+
+### Option: `dlna_proxy_enabled`
+
+Enables the optional Plex DLNA proxy. The proxy advertises a separate DLNA
+server and forwards requests to Plex DLNA while rewriting Docker-internal media
+URLs to a LAN-reachable URL.
+
+This is disabled by default.
+
+### Option: `dlna_proxy_backend_url`
+
+The internal URL of the Plex DLNA server used by the proxy.
+
+The default is:
+
+```txt
+http://127.0.0.1:32469
+```
+
+### Option: `dlna_proxy_advertise_ip`
+
+The LAN IP address advertised to TVs and other DLNA clients.
+
+Leave this empty to let the proxy auto-detect an address. If DLNA clients cannot
+connect, set this to the Home Assistant host IP address.
+
+### Option: `dlna_proxy_port`
+
+The HTTP port used by the DLNA proxy.
+
+The default is `32470`.
+
+### Option: `dlna_proxy_friendly_name`
+
+The friendly name shown by TVs and other DLNA clients for the proxy server.
 
 ## Solving connection issues with Plex
 
@@ -109,7 +149,9 @@ http://homeassistant.local:32400,http://192.168.1.88:32400,http://mydomain.duckd
 - A Plex Pass gives you exclusive access to new features, which are
   available through a Beta version channel of the media server. At this
   time, running this "Beta" version, is not supported by this app.
-- This app does not support Plex over DLNA.
+- Plex DLNA support is limited to the optional DLNA proxy. The proxy is intended
+  for setups where Plex DLNA advertises Docker-internal media URLs that clients
+  on the LAN cannot reach.
 
 ## Changelog & Releases
 

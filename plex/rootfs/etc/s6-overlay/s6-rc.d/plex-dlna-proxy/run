@@ -1,0 +1,13 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Community App: Plex Media Server
+# Runs the optional Plex DLNA proxy
+# ==============================================================================
+if ! bashio::config.true "dlna_proxy_enabled"; then
+    bashio::log.info "Plex DLNA proxy is disabled."
+    exec sleep infinity
+fi
+
+bashio::log.info "Starting Plex DLNA proxy..."
+exec python3 /usr/bin/plex-dlna-proxy

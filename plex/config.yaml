@@ -29,7 +29,10 @@ ports:
   32413/udp: 32413
   32414/udp: 32414
   32469/tcp: 32469
+  1900/udp: null
+  32470/tcp: null
 ports_description:
+  1900/udp: Optional Plex DLNA proxy discovery
   3005/tcp: Plex Home Theater via Plex Companion
   8324/tcp: Plex for Roku via Plex Companion
   32400/tcp: Plex Media Server Interface
@@ -38,6 +41,7 @@ ports_description:
   32413/udp: GDM network discovery
   32414/udp: GDM network discovery
   32469/tcp: Plex DLNA Server
+  32470/tcp: Optional Plex DLNA proxy
 hassio_api: true
 backup_exclude:
   - "**/Plex Media Server/Cache/**"
@@ -49,6 +53,16 @@ backup_exclude:
   - "**/Plex Media Server/Metadata/**"
 options:
   claim_code: ""
+  dlna_proxy_enabled: false
+  dlna_proxy_backend_url: http://127.0.0.1:32469
+  dlna_proxy_advertise_ip: ""
+  dlna_proxy_port: 32470
+  dlna_proxy_friendly_name: Plex DLNA Proxy
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
   claim_code: str
+  dlna_proxy_enabled: bool
+  dlna_proxy_backend_url: url
+  dlna_proxy_advertise_ip: str
+  dlna_proxy_port: port
+  dlna_proxy_friendly_name: str

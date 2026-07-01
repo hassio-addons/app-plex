@@ -17,6 +17,7 @@ RUN \
     \
     && apt-get install -y --no-install-recommends \
         xmlstarlet>="1.6.1-4" \
+        python3=3.13.5-1 \
         uuid-runtime=2.41-5 \
         unrar=1:7.1.8-1 \
     \
@@ -36,6 +37,16 @@ RUN \
 
 # Copy root filesystem
 COPY rootfs /
+
+RUN \
+    find /etc/s6-overlay/s6-rc.d /usr/bin/plex-dlna-proxy \
+        -type f -exec sed -i 's/\r$//' {} \; \
+    && chmod a+x \
+        /etc/s6-overlay/s6-rc.d/init-plex/run \
+        /etc/s6-overlay/s6-rc.d/plex/run \
+        /etc/s6-overlay/s6-rc.d/plex/finish \
+        /etc/s6-overlay/s6-rc.d/plex-dlna-proxy/run \
+        /usr/bin/plex-dlna-proxy
 
 # Build arguments
 ARG BUILD_ARCH

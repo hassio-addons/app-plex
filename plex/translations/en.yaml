@@ -9,7 +9,31 @@ configuration:
     description: >-
       To allow your server to sign-in to your Plex account, it needs a so-called
       "Claim Code". In order to get your code surf to: https://www.plex.tv/claim
+  dlna_proxy_enabled:
+    name: Enable DLNA proxy
+    description: >-
+      Advertise a LAN-reachable proxy for Plex DLNA and rewrite Docker-internal
+      media URLs in DLNA responses.
+  dlna_proxy_backend_url:
+    name: DLNA proxy backend URL
+    description: >-
+      URL of the Plex DLNA server inside the app container.
+  dlna_proxy_advertise_ip:
+    name: DLNA proxy advertised IP
+    description: >-
+      LAN IP address that TVs should use to reach this Home Assistant host.
+      Leave empty to auto-detect, or set it manually when using Docker bridge
+      networking.
+  dlna_proxy_port:
+    name: DLNA proxy port
+    description: >-
+      TCP port used by the DLNA proxy HTTP server.
+  dlna_proxy_friendly_name:
+    name: DLNA proxy name
+    description: >-
+      Friendly name shown by TVs and other DLNA clients.
 network:
+  1900/udp: Optional Plex DLNA proxy discovery
   3005/tcp: Plex Home Theater via Plex Companion
   8324/tcp: Plex for Roku via Plex Companion
   32400/tcp: Plex Media Server Interface
@@ -18,3 +42,4 @@ network:
   32413/udp: GDM network discovery
   32414/udp: GDM network discovery
   32469/tcp: Plex DLNA Server
+  32470/tcp: Optional Plex DLNA proxy
