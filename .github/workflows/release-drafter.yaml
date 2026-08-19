@@ -6,20 +6,11 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: read
 
 jobs:
-  release-drafter:
-    name: ✏️ Draft release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: 🚀 Run Release Drafter
-        uses: release-drafter/release-drafter@eada3c96a64734dd381cfbda23511034e328ddb0 # v7.6.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  workflows:
+    uses: hassio-addons/workflows/.github/workflows/release-drafter.yaml@c953d10f34dac22eb68c1cdedbbc4106a89bef88 # v3.0.1
