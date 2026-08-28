@@ -9,12 +9,3 @@ configuration:
     description: >-
       To allow your server to sign-in to your Plex account, it needs a so-called
       "Claim Code". In order to get your code surf to: https://www.plex.tv/claim
-network:
-  3005/tcp: Plex Home Theater via Plex Companion
-  8324/tcp: Plex for Roku via Plex Companion
-  32400/tcp: Plex Media Server Interface
-  32410/udp: GDM network discovery
-  32412/udp: GDM network discovery
-  32413/udp: GDM network discovery
-  32414/udp: GDM network discovery
-  32469/tcp: Plex DLNA Server
