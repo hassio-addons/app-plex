@@ -7,7 +7,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Setup base system
 ARG BUILD_ARCH=amd64
-ARG PLEX_VERSION=1.43.4.10903-e5521bd8c
+ARG PLEX_VERSION=1.43.5.11029-6bf8af3f0
 
 # hadolint ignore=DL3008
 RUN \
